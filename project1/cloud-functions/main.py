@@ -50,7 +50,7 @@ def cloud_fn_your_cloud_function(event, context):
 
         server_name = f"auto_server-{uuid.uuid4()}"
         compute = googleapiclient.discovery.build('compute', 'v1')
-        image_response = compute.images().getFromFamily(project="debian-cloud", family="debian-9").execute()
+        image_response = compute.images().getFromFamily(project="debian-cloud", family="debian-11").execute()
         source_disk_image = image_response["selfLink"]
         config = {
             "name": server_name,
