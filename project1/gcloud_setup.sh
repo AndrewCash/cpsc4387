@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/sh
 
 read -p "Input GCP project: " project
 region="us-central1"
