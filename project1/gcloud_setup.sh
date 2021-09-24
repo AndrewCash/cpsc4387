@@ -95,7 +95,7 @@ do
         --service-account=myservice@"$project".iam.gserviceaccount.com \
         --timeout=540s \
         --trigger-topic=stop-all-servers
-        /
+        
       break;;
 
     * )  
