@@ -1,6 +1,23 @@
 #! /bin/sh
 
-read -p "Input GCP project: " project
+read -p "Is this project 1? (Y/n) " confirmation 
+while true
+do
+  case $confirmation in
+    [nN]* ) 
+      read -p "Input GCP project: " project
+      break;;
+
+    * )  
+      project="cpsc-4387-project-1"
+      break ;;
+
+
+      
+  esac
+done
+
+# Set region
 region="us-central1"
 
 
@@ -95,9 +112,7 @@ do
         --service-account=myservice@"$project".iam.gserviceaccount.com \
         --timeout=540s \
         --trigger-topic=stop-all-servers
-        
       break;;
-
     * )  
       break ;;
   esac
@@ -135,6 +150,29 @@ do
       gcloud scheduler jobs create pubsub job-stop-all-servers --schedule="0 0 * * *" --topic=stop-all-servers --message-body=Hello!
       break;;
 
+    * )  
+      break ;;
+  esac
+done
+
+
+# Create your cloud functions
+read -p "Do you want to create your custom cloud function at this time? (y/N) " confirmation
+while true
+do
+  case $confirmation in
+    [yY]* ) 
+      sourcepath="./cloud-functions"
+      gcloud functions deploy --quiet function-custom \
+        --region=$region \
+        --memory=256MB \
+        --entry-point=cloud_fn_stop_all_servers \
+        --runtime=python37 \
+        --source=$sour cpsc-4387-project-1cepath \
+        --service-account=myservice@"$project".iam.gserviceaccount.com \
+        --timeout=540s \
+        --trigger-topic=stop-all-servers
+      break;;
     * )  
       break ;;
   esac
