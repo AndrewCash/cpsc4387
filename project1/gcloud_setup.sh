@@ -13,7 +13,7 @@ do
       break ;;
 
 
-      
+
   esac
 done
 
@@ -70,6 +70,7 @@ do
   case $confirmation in
     [yY]* ) 
       gcloud pubsub topics create stop-all-servers
+      gcloud pubsub topics create project-1-topic
       break;;
 
     * )  
@@ -107,7 +108,7 @@ do
         --region=$region \
         --memory=256MB \
         --entry-point=cloud_fn_stop_all_servers \
-        --runtime=python37 \
+        --runtime=python39 \
         --source=$sourcepath \
         --service-account=myservice@"$project".iam.gserviceaccount.com \
         --timeout=540s \
@@ -163,15 +164,15 @@ do
   case $confirmation in
     [yY]* ) 
       sourcepath="./cloud-functions"
-      gcloud functions deploy --quiet function-custom \
+      gcloud functions deploy --quiet function-custom-asc \
         --region=$region \
         --memory=256MB \
-        --entry-point=cloud_fn_stop_all_servers \
-        --runtime=python37 \
-        --source=$sour cpsc-4387-project-1cepath \
+        --entry-point=cloud_fn_custom_asc \
+        --runtime=python39 \
+        --source=$sourcepath \
         --service-account=myservice@"$project".iam.gserviceaccount.com \
         --timeout=540s \
-        --trigger-topic=stop-all-servers
+        --trigger-topic=project-1-topic
       break;;
     * )  
       break ;;

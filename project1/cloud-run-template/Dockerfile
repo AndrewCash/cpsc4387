@@ -1,15 +1,20 @@
 # Use the official Python image.
 # https://hub.docker.com/_/python
-FROM python:3.7
+FROM python:3.9
+
+# Allow statements and log messages to immediately appear in the Knative logs
+ENV PYTHONUNBUFFERED True
 
 # Copy local code to the container image.
 ENV APP_HOME /app
 WORKDIR $APP_HOME
-COPY . .
+COPY . ./
 
 # Install production dependencies.
-RUN python3.8 get-pip.py
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# RUN python3.8 get-pip.py
+# RUN pip install -r requirements.txt
 
 # RUN pip install Flask gunicorn
 # RUN pip install -r requirements.txt

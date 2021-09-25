@@ -22,9 +22,9 @@ def cloud_fn_stop_all_servers(event, context):
             compute.instances().stop(project=project, zone=zone, instance=vm_instance["name"]).execute()
 
 
-def cloud_fn_your_cloud_function(event, context):
+def cloud_fn_custom_asc (event, context):
     """
-    This is your function
+    This is your custom function
     Args:
          event (dict):  The dictionary with data specific to this type of
          event. The `data` field contains the PubsubMessage message. The

@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request
 from google.cloud import pubsub_v1
 
@@ -10,7 +11,7 @@ def test_page():
     project = "cpsc-4387-project-1"
     if request.method == 'POST':
         action = request.form['action']
-        pubsub_topic = "pubbly_subbly"
+        pubsub_topic = "project-1-topic"
         publisher = pubsub_v1.PublisherClient()
         topic_path = publisher.topic_path(project, pubsub_topic)
         future = publisher.publish(topic_path, data=b'I feel vigorous', action=action)
@@ -20,4 +21,4 @@ def test_page():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
