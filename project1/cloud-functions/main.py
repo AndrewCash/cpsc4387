@@ -1,6 +1,9 @@
+import datetime
 import uuid
 import googleapiclient.discovery
 from google.cloud import runtimeconfig
+from google.cloud import storage
+from pprint import pprint
 
 def cloud_fn_stop_all_servers(event, context):
     """
@@ -43,12 +46,14 @@ def cloud_fn_custom_asc (event, context):
         return
 
     if action == "build":
+        print("Building")
         runtimeconfig_client = runtimeconfig.Client()
         myconfig = runtimeconfig_client.config('cybergym')
-        project = myconfig.get_variable('project').value.decode("utf-8")
-        zone = myconfig.get_variable('zone').value.decode("utf-8")
-
-        server_name = f"auto_server-{uuid.uuid4()}"
+        # project = myconfig.get_variable('project').value.decode("utf-8")
+        # zone = myconfig.get_variable('zone').value.decode("utf-8")
+        project = "cpsc-4387-project-1"
+        zone = "us-central1-a"
+        server_name = f"auto-server-{uuid.uuid4()}"
         compute = googleapiclient.discovery.build('compute', 'v1')
         image_response = compute.images().getFromFamily(project="debian-cloud", family="debian-11").execute()
         source_disk_image = image_response["selfLink"]
@@ -72,5 +77,29 @@ def cloud_fn_custom_asc (event, context):
             }],
         }
         print("Continue coding to deploy the server")
+
+        request = compute.instances().insert(project=project, zone=zone, body=config)
+        response = request.execute()
+
+        pprint(response)
+
+    
     elif action == "bucket":
-        print("Replace this with a function to create the cloud bucket.")
+        print("buckets")
+        # create the cloud bucket. Use datetime to make globally unique bucket name
+        bucket_name = "your-new-bucket" + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+
+        storage_client = storage.Client()
+
+        bucket = storage_client.bucket(bucket_name)
+        bucket.storage_class = "COLDLINE"
+        new_bucket = storage_client.create_bucket(bucket, location="us")
+
+        print(
+            "Created bucket {} in {} with storage class {}".format(
+                new_bucket.name, new_bucket.location, new_bucket.storage_class
+            )
+        )
+        return new_bucket
+
+
