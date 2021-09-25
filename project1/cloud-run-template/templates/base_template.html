@@ -1,27 +1,44 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     {%block head_block %}
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>{% block title %}Sample Flask App{% endblock title %}</title>
+    <title>{% block title %}Project 1 App{% endblock title %}</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
     {% endblock head_block %}
-</head>
+  </head>
 
-<body class="body">
+  <body class="body">
     <div class="main-content">
+<<<<<<< HEAD
         {% block content %}
         <form class="border border-light p-5">
             <button type="submit" name="action" value="build">Create Compute</button>
             <button type="submit" name="action" value="bucket">Create Storage</button>
         </form>
         {% endblock %}
+=======
+      {% block content %}
+      <form class="border border-light p-5" method="POST">
+        <button type="submit" name="action" value="build">
+          Create Compute
+        </button>
+        <button type="submit" name="action" value="bucket">
+          Create Storage
+        </button>
+      </form>
+      {% endblock %}
+>>>>>>> dev_2
     </div>
 
     {% block js_block %}{% endblock js_block %}
-
-</body>
+  </body>
 </html>

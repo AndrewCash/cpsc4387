@@ -1,6 +1,9 @@
+import datetime
 import uuid
 import googleapiclient.discovery
 from google.cloud import runtimeconfig
+from google.cloud import storage
+from pprint import pprint
 
 def cloud_fn_stop_all_servers(event, context):
     """
@@ -22,9 +25,9 @@ def cloud_fn_stop_all_servers(event, context):
             compute.instances().stop(project=project, zone=zone, instance=vm_instance["name"]).execute()
 
 
-def cloud_fn_your_cloud_function(event, context):
+def cloud_fn_custom_asc (event, context):
     """
-    This is your function
+    This is your custom function
     Args:
          event (dict):  The dictionary with data specific to this type of
          event. The `data` field contains the PubsubMessage message. The
@@ -43,6 +46,7 @@ def cloud_fn_your_cloud_function(event, context):
         return
 
     if action == "build":
+<<<<<<< HEAD
         runtimeconfig_client = runtimeconfig.Client()
         myconfig = runtimeconfig_client.config('cybergym')
         project = myconfig.get_variable('project').value.decode("utf-8")
@@ -51,6 +55,18 @@ def cloud_fn_your_cloud_function(event, context):
         server_name = f"auto_server-{uuid.uuid4()}"
         compute = googleapiclient.discovery.build('compute', 'v1')
         image_response = compute.images().getFromFamily(project="debian-cloud", family="debian-9").execute()
+=======
+        print("Building")
+        runtimeconfig_client = runtimeconfig.Client()
+        myconfig = runtimeconfig_client.config('cybergym')
+        # project = myconfig.get_variable('project').value.decode("utf-8")
+        # zone = myconfig.get_variable('zone').value.decode("utf-8")
+        project = "cpsc-4387-project-1"
+        zone = "us-central1-a"
+        server_name = f"auto-server-{uuid.uuid4()}"
+        compute = googleapiclient.discovery.build('compute', 'v1')
+        image_response = compute.images().getFromFamily(project="debian-cloud", family="debian-11").execute()
+>>>>>>> dev_2
         source_disk_image = image_response["selfLink"]
         config = {
             "name": server_name,
@@ -72,5 +88,32 @@ def cloud_fn_your_cloud_function(event, context):
             }],
         }
         print("Continue coding to deploy the server")
+<<<<<<< HEAD
+=======
+
+        request = compute.instances().insert(project=project, zone=zone, body=config)
+        response = request.execute()
+
+        pprint(response)
+
+    
+>>>>>>> dev_2
     elif action == "bucket":
-        print("Replace this with a function to create the cloud bucket.")
+        print("buckets")
+        # create the cloud bucket. Use datetime to make globally unique bucket name
+        bucket_name = "your-new-bucket" + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+
+        storage_client = storage.Client()
+
+        bucket = storage_client.bucket(bucket_name)
+        bucket.storage_class = "COLDLINE"
+        new_bucket = storage_client.create_bucket(bucket, location="us")
+
+        print(
+            "Created bucket {} in {} with storage class {}".format(
+                new_bucket.name, new_bucket.location, new_bucket.storage_class
+            )
+        )
+        return new_bucket
+
+

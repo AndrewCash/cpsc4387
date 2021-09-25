@@ -1,4 +1,5 @@
 flask
+gunicorn
 google-cloud
 google-cloud-core[grpc]
 google-api-python-client
