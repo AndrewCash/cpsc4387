@@ -46,16 +46,6 @@ def cloud_fn_custom_asc (event, context):
         return
 
     if action == "build":
-<<<<<<< HEAD
-        runtimeconfig_client = runtimeconfig.Client()
-        myconfig = runtimeconfig_client.config('cybergym')
-        project = myconfig.get_variable('project').value.decode("utf-8")
-        zone = myconfig.get_variable('zone').value.decode("utf-8")
-
-        server_name = f"auto_server-{uuid.uuid4()}"
-        compute = googleapiclient.discovery.build('compute', 'v1')
-        image_response = compute.images().getFromFamily(project="debian-cloud", family="debian-9").execute()
-=======
         print("Building")
         runtimeconfig_client = runtimeconfig.Client()
         myconfig = runtimeconfig_client.config('cybergym')
@@ -66,7 +56,6 @@ def cloud_fn_custom_asc (event, context):
         server_name = f"auto-server-{uuid.uuid4()}"
         compute = googleapiclient.discovery.build('compute', 'v1')
         image_response = compute.images().getFromFamily(project="debian-cloud", family="debian-11").execute()
->>>>>>> dev_2
         source_disk_image = image_response["selfLink"]
         config = {
             "name": server_name,
@@ -88,8 +77,6 @@ def cloud_fn_custom_asc (event, context):
             }],
         }
         print("Continue coding to deploy the server")
-<<<<<<< HEAD
-=======
 
         request = compute.instances().insert(project=project, zone=zone, body=config)
         response = request.execute()
@@ -97,7 +84,6 @@ def cloud_fn_custom_asc (event, context):
         pprint(response)
 
     
->>>>>>> dev_2
     elif action == "bucket":
         print("buckets")
         # create the cloud bucket. Use datetime to make globally unique bucket name
